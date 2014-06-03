@@ -17,8 +17,42 @@ Or install it yourself as:
     $ gem install napa_pagination
 
 ## Usage
+Once you have the gem installed, simply replace `represent` with the `paginate` when returning the response from your API. Below is an example based on the Napa Quickstart Guide.
 
-TODO: Write usage instructions here
+```ruby
+class PeopleApi < Grape::API
+  desc 'Get a list of people'
+  params do
+    optional :ids, type: String, desc: 'comma separated person ids'
+  end
+  get do
+    people = Person.filter(declared(params, include_missing: false))
+    # represent people, with: PersonRepresenter
+    paginate people, with: PersonRepresenter
+  end
+
+  ...
+end
+```
+
+By default, this will default to 25 results per page. If you want to change that you can pass in an override in the params block:
+
+```ruby
+class PeopleApi < Grape::API
+  desc 'Get a list of people'
+  params do
+    optional :ids, type: String, desc: 'comma separated person ids'
+    optional :per_page, type: Integer, desc: 'Results per page', default: 100
+  end
+  get do
+    people = Person.filter(declared(params, include_missing: false))
+    # represent people, with: PersonRepresenter
+    paginate people, with: PersonRepresenter
+  end
+
+  ...
+end
+```
 
 ## Contributing
 

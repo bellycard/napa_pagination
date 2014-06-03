@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = NapaPagination::VERSION
   spec.authors       = ["Darby Frey"]
   spec.email         = ["darby@bellycard.com"]
-  spec.summary       = %q{TODO: A simple pagination representer for Napa}
-  spec.description   = %q{TODO: A simple pagination representer for Napa}
+  spec.summary       = %q{A simple pagination representer for Napa}
+  spec.description   = %q{A simple pagination representer for Napa}
   spec.homepage      = ""
   spec.license       = "MIT"
 
