@@ -17,7 +17,7 @@ Or install it yourself as:
     $ gem install napa_pagination
 
 ## Usage
-Once you have the gem installed, simply replace `represent` with the `paginate` when returning the response from your API. Below is an example based on the Napa Quickstart Guide.
+Once you have the gem installed, simply replace `represent` with the `paginate` when returning the response from your API. Below is an example based on the [Napa Quickstart Guide](https://github.com/bellycard/napa/blob/master/docs/quickstart.md).
 
 ```ruby
 class PeopleApi < Grape::API
