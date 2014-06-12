@@ -5,8 +5,9 @@ module NapaPagination
 
       if data.respond_to?(:to_a)
         return {}.tap do |r|
+          data = NapaPagination::Pagination.new(represent_pagination(data))
           r[:data] = data.map{ |item| with.new(item).to_hash(args) }
-          r[:pagination] = NapaPagination::Pagination.new(represent_pagination(data)).to_h
+          r[:pagination] = data.to_h
         end
       else
         return { data: with.new(data).to_hash(args)}

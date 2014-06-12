@@ -1,5 +1,6 @@
 module NapaPagination
   class Pagination
+    include Enumerable
     def initialize(object)
       @object = object
     end
@@ -14,6 +15,12 @@ module NapaPagination
         p[:per_page]      = @object.limit_value   if @object.respond_to?(:limit_value)
         p[:total_pages]   = @object.total_pages   if @object.respond_to?(:total_pages)
         p[:total_count]   = @object.total_count   if @object.respond_to?(:total_count)
+      end
+    end
+
+    def each(&block)
+      @object.each do |member|
+        block.call(member)
       end
     end
   end
