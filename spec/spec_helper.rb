@@ -13,5 +13,9 @@ RSpec.configure do |config|
 
     class Foo < ActiveRecord::Base
     end
+
+    class FooRepresenter < Napa::Representer
+      property :word, type: String
+    end
   end
 end

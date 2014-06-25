@@ -7,17 +7,20 @@ class FooRepresenter < Napa::Representer; end
 describe NapaPagination::GrapeHelpers do
   before do
     @endpoint = Grape::Endpoint.new(nil, {path: '/test', method: :get})
+    allow(@endpoint).to receive(:params).and_return({ })
   end
-
+  
+  after do
+    Foo.destroy_all
+  end
+  
   context '#represent_pagination' do
     before do
       Foo.create(word: 'bar')
       Foo.create(word: 'baz')
     end
 
-    after do
-      Foo.destroy_all
-    end
+
 
     it 'returns the collection if it is already paginated' do
       objects = Kaminari.paginate_array([Foo.new, Foo.new, Foo.new]).page(1)
@@ -86,6 +89,38 @@ describe NapaPagination::GrapeHelpers do
       expect(output[:pagination][:per_page]).to eq(25)
       expect(output[:pagination][:total_pages]).to eq(1)
       expect(output[:pagination][:total_count]).to eq(3)
+    end
+  end
+
+  context '#sort_by_params' do
+    before do
+      @added_first = Foo.create(word: 'b')
+      @asc_first = Foo.create(word: 'a')
+      @asc_last = Foo.create(word: 'c')
+    end
+
+
+    it 'orders the array in ascending order' do
+      allow(@endpoint).to receive(:params).and_return(Hashie::Mash.new({ sort_by: :word, sort_order: :asc }))
+
+      output = @endpoint.paginate(Foo.all, with: FooRepresenter)
+      expect(output[:data].first['word']).to eql(@asc_first.word)
+      expect(output[:data][1]['word']).to eql(@added_first.word)
+      expect(output[:data].last['word']).to eql(@asc_last.word)
+    end
+
+    it 'does nothing if there are not sort params' do
+
+      output = @endpoint.paginate(Foo.all, with: FooRepresenter)
+      expect(output[:data].first['word']).to eql(@added_first.word)
+    end
+
+    it 'orders the array in descending order' do
+      allow(@endpoint).to receive(:params).and_return(Hashie::Mash.new({ sort_by: :word, sort_order: :desc }))
+
+      output = @endpoint.paginate(Foo.all, with: FooRepresenter)
+      expect(output[:data].first['word']).to eql(@asc_last.word)
+      expect(output[:data].last['word']).to eql(@asc_first.word)
     end
   end
 end
