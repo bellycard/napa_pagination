@@ -32,7 +32,7 @@ module NapaPagination
 
     def order_by_params!(data)
       if params[:sort_by] && data.column_names.map(&:to_sym).include?(params[:sort_by].to_sym)
-        sort_order = params.try(:sort_order) || :asc
+        sort_order = params[:sort_order] || :asc
         data.order!(params[:sort_by] => sort_order.to_sym)
       end
       data
