@@ -1,6 +1,6 @@
 require 'grape'
 require 'napa'
-require 'kaminari/grape'
+#require 'kaminari/grape'
 require 'active_record'
 
 require 'napa_pagination/version'
